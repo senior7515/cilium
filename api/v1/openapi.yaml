@@ -295,6 +295,24 @@ paths:
           x-go-name: Invalid
         '404':
           description: Endpoint not found
+
+  "/endpoint/{id}/healthz":
+    get:
+      summary: Retrieves the status logs associated with this endpoint.
+      tags:
+      - endpoint
+      parameters:
+      - "$ref": "#/parameters/endpoint-id"
+      responses:
+        '200':
+          description: Success
+          schema:
+            "$ref": "#/definitions/EndpointHealthz"
+        '400':
+          description: Invalid identity provided
+          x-go-name: Invalid
+        '404':
+          description: Endpoint not found
   "/identity":
     get:
       summary: Retrieves a list of identities that have metadata matching the provided parameters.

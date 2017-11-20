@@ -313,6 +313,34 @@ func init() {
         }
       }
     },
+    "/endpoint/{id}/healthz": {
+      "get": {
+        "tags": [
+          "endpoint"
+        ],
+        "summary": "Retrieves the status logs associated with this endpoint.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/endpoint-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EndpointHealthz"
+            }
+          },
+          "400": {
+            "description": "Invalid identity provided",
+            "x-go-name": "Invalid"
+          },
+          "404": {
+            "description": "Endpoint not found"
+          }
+        }
+      }
+    },
     "/endpoint/{id}/labels": {
       "get": {
         "tags": [
