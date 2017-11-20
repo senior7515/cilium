@@ -1071,6 +1071,10 @@ func init() {
           "description": "Docker network ID",
           "type": "string"
         },
+        "healthz": {
+          "description": "Health of the endpoint",
+          "$ref": "#/definitions/EndpointHealthz"
+        },
         "host-mac": {
           "description": "MAC address",
           "type": "string"
@@ -1198,6 +1202,37 @@ func init() {
           "$ref": "#/definitions/EndpointState"
         }
       }
+    },
+    "EndpointHealthz": {
+      "description": "Health of the endpoint",
+      "type": "object",
+      "properties": {
+        "bpf": {
+          "$ref": "#/definitions/EndpointHealthzStatus"
+        },
+        "connected": {
+          "description": "Is this endpoint reachable",
+          "type": "boolean"
+        },
+        "health": {
+          "$ref": "#/definitions/EndpointHealthzStatus"
+        },
+        "policy": {
+          "$ref": "#/definitions/EndpointHealthzStatus"
+        }
+      }
+    },
+    "EndpointHealthzStatus": {
+      "description": "A common set of statuses for endpoint health",
+      "type": "string",
+      "enum": [
+        "OK",
+        "Bootstrap",
+        "Pending",
+        "Warning",
+        "Failure",
+        "Disabled"
+      ]
     },
     "EndpointPolicy": {
       "description": "Policy information of an endpoint",

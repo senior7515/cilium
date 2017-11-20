@@ -755,6 +755,9 @@ definitions:
       status:
         description: Most recent status log. See endpoint/{id}/log for the complete log.
         "$ref": "#/definitions/EndpointStatusLog"
+      healthz:
+        description: Health of the endpoint
+        "$ref": "#/definitions/EndpointHealthz"
       mac:
         description: MAC address
         type: string
@@ -835,6 +838,29 @@ definitions:
       - ready
       - disconnecting
       - disconnected
+  EndpointHealthz:
+    description: Health of the endpoint
+    type: object
+    properties:
+      health:
+       "$ref": "#/definitions/EndpointHealthzStatus"
+      bpf:
+       "$ref": "#/definitions/EndpointHealthzStatus"
+      policy:
+       "$ref": "#/definitions/EndpointHealthzStatus"
+      connected:
+        description: Is this endpoint reachable
+        type: boolean
+  EndpointHealthzStatus:
+    description: A common set of statuses for endpoint health
+    type: string
+    enum:
+      - OK
+      - Bootstrap
+      - Pending
+      - Warning
+      - Failure
+      - Disabled
   EndpointStatusLog:
     description: Status log of endpoint
     type: array
