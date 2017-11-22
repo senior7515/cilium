@@ -41,6 +41,7 @@ import (
 	"github.com/cilium/cilium/pkg/kvstore"
 	"github.com/cilium/cilium/pkg/labels"
 	"github.com/cilium/cilium/pkg/logfields"
+	"github.com/cilium/cilium/pkg/metrics"
 	"github.com/cilium/cilium/pkg/node"
 	"github.com/cilium/cilium/pkg/option"
 	"github.com/cilium/cilium/pkg/policy"
@@ -99,6 +100,7 @@ var (
 	dockerEndpoint        string
 	singleClusterRoute    bool
 	useEnvoy              bool
+	prometheusServeAddr   string
 )
 
 var logOpts = make(map[string]string)
@@ -386,6 +388,8 @@ func init() {
 		"version", false, "Print version information")
 	flags.Bool(
 		"pprof", false, "Enable serving the pprof debugging API")
+	flags.StringVar(&prometheusServeAddr,
+		"prometheus-serve-addr", "", "IP:Port to serve prometheus metrics from")
 
 	viper.BindPFlags(flags)
 }
@@ -589,6 +593,10 @@ func initEnv() {
 }
 
 func runDaemon() {
+	if err := metrics.Enable(prometheusServeAddr); err != nil {
+		log.WithError(err).Fatal("Error while starting metrics")
+	}
+
 	d, err := NewDaemon(config)
 	if err != nil {
 		log.WithError(err).Fatal("Error while creating daemon")
