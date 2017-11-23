@@ -14,6 +14,7 @@ var (
 	// This is the namespace presented to prometheus and should be scoped to us
 	Namespace = "cilium"
 
+	// Endpoints
 	NumEndpoints = prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: Namespace,
 		Name:      "endpoints",
@@ -34,10 +35,33 @@ var (
 		Help:      "Count of all endpoint regenerations that have completed, tagged by outcome",
 	},
 		[]string{"outcome"})
+
+	// Policies
+	NumPolicies = prometheus.NewGauge(prometheus.GaugeOpts{
+		Namespace: Namespace,
+		Name:      "policies",
+		Help:      "Number of policies currently loaded",
+	})
+
+	PolicyRevision = prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: Namespace,
+		Name:      "policies_max_revision",
+		Help:      "Highest policy revision number in the agent",
+	})
+
+	PolicyImportErrors = prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: Namespace,
+		Name:      "policies_import_errors",
+		Help:      "Number of times a policy import has failed",
+	})
 )
 
 func init() {
 	prometheus.MustRegister(NumEndpoints)
 	prometheus.MustRegister(NumEndpointsRegenerating)
 	prometheus.MustRegister(CountEndpointsRegenerations)
+
+	prometheus.MustRegister(NumPolicies)
+	prometheus.MustRegister(PolicyRevision)
+	prometheus.MustRegister(PolicyImportErrors)
 }
